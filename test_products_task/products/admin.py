@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from test_products_task.products.models import Category, Product, Like
+from test_products_task.products.models import Category, Product, Like, Comment
 
 
 @admin.register(Product)
@@ -15,4 +15,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
     pass

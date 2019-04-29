@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.core.serializers import serialize
 from django.db.models import Sum, Case, When, IntegerField, Count, F, Q
 from django.db.models.functions import Coalesce
+from django.db.utils import IntegrityError
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
@@ -14,11 +15,12 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView, FormView, TemplateView
+from django.shortcuts import render
 
 from test_products_task.common.mixins import ActiveTabMixin
 from test_products_task.common.utils import get_ip_from_request
 from test_products_task.products.forms import LikeForm
-from test_products_task.products.models import Category, Product, Like
+from test_products_task.products.models import Category, Product, Like, Comment
 
 
 class CategoryListView(ActiveTabMixin, ListView):
@@ -34,10 +36,14 @@ class CategoryListView(ActiveTabMixin, ListView):
         return context
 
     def get(self, request, *args, **kwargs):
+        categories_list = []
         categories = json.loads(serialize('json', Category.objects.all()))
+        print(categories)
         for i in categories:
-            print(i)
-        return HttpResponse('Hello World!')
+            number_filt = Product.objects.filter(category__name=i['fields']['name']).count()
+            el = {'name': i['fields']['name'], 'number': number_filt, 'get_absolute_url': 'http://localhost:8000/products/'+ i['fields']['slug']}
+            categories_list.append(el)
+        return render(request, 'products/category_list.html', {'category_list': categories_list})
 
 
 class CategoryDetailView(DetailView):
@@ -57,6 +63,8 @@ class ProductDetailView(DetailView):
         category_slug = kwargs['category_slug']
         try:
             self.category = Category.objects.get(slug=category_slug)
+            product_slug = request.path.split('/')[4]
+            #self.comment = Category.objects.filter(product_slug=product_slug)
         except Category.DoesNotExist:
             raise Http404
         return super().get(request, *args, **kwargs)
@@ -77,8 +85,31 @@ class LikeToggleView(AjaxResponseMixin, JSONResponseMixin, FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        raise NotImplementedError()
+        like = Like()
+        if request.user.is_authenticated:
+            like.user = request.user
+        else:
+            like.ip = get_ip_from_request(request)
+        product_id = request.path.split('/')[2]
+        like.product =  Product.objects.get(id=product_id)
+        try:
+            like.save()
+        except IntegrityError:
+            messages.warning(request, 'You have already liked this product')
+            return HttpResponse('#')
 
+        return HttpResponseRedirect('#')
+
+
+class CommentToggleView(AjaxResponseMixin, JSONResponseMixin, FormView, Comment):
+    model = Comment
+    active_tab = 'product_detail'
+
+    def get (request, pk):
+        new = get_object_or_404(Product, pk)
+        comment = model.objects.filter(new=pk)
+        print(comment)
+        return render(request, 'products/product_detail.html', {'new': new, 'comments': comment})
 
 class AddToCartView(AjaxResponseMixin, JSONResponseMixin, FormView):
     http_method_names = ('post',)

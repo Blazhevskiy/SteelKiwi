@@ -62,3 +62,38 @@
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
 }
+
+
+/* For category_detail */
+
+.category_detail__image{
+  width: 10em;
+}
+
+.category_detail__container{
+  display: flex;
+  align-items: center;
+}
+
+.category_detail__description{
+  flex: 2;
+}
+
+.category_detail__content{
+  flex: 1;
+}
+
+/* For product_detail */
+
+.product_detail__page{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product_detail__image{
+  width: 25em;
+}
+
+
+

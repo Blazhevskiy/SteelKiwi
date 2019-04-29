@@ -4,10 +4,16 @@
     <h2>{{ category.name }}</h2>
     <div class="list-group">
     {% for product in category.products.all %}
-        <a href="{{ product.get_absolute_url }}" class="list-group-item">
+    <a href="http://{{ request.get_host }}{{ request.path }}{{ product.slug }}" class="category_detail__container list-group-item">
+        <div class="category_detail__content">
             <h4 class="list-group-item-heading">{{ product.name }}</h4>
-            <p class="list-group-item-text">{{ product.price }}</p>
-        </a>
+            <p class="list-group-item-text">Price: {{ product.price }} ₴</p>
+        </div>
+        <div class="category_detail__description">
+            <p>{{ product.description }}</p>
+        </div>
+        <div><img class="category_detail__image" src="http://localhost:8000/media/{{ product.image }}" alt="{{ product.name }} image"></div>
+    </a>
 
     {% endfor %}
 </div>

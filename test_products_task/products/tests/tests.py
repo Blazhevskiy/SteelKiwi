@@ -1,11 +1,13 @@
 from datetime import timedelta
 from unittest.case import skipUnless
+from lists.views import home_page 
+from freezegun import freeze_time
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
-from freezegun import freeze_time
 
 from test_products_task.products.models import Category, Product, Like
 from test_products_task.products.tests.factories import CategoryFactory, ProductFactory, LikeFactory, CommentFactory
@@ -22,7 +24,6 @@ class CategoryListViewTestCase(TestCase):
         cls.category_2 = CategoryFactory()
         cls.user = UserFactory()
         cls.url = reverse('products:category_list')
-
     def create_likes_by_0(self):
         # base products
         self.product_base_20_likes = ProductFactory(category=self.category, grade=Product.GRADE_CHOICES.base)
@@ -217,3 +218,18 @@ class LikeToggleTestCase(TestCase):
 
     def test_user_dislike_product(self):
         assert False, 'Not implemented'
+
+
+class UserTest(TestCase):
+
+    def setupTestData(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+
+    def ClientTest(self):
+        
+        c = Client()
+        logged_in = c.login(username='testuser', password='12345')
+
+    

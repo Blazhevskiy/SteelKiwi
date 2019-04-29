@@ -35,15 +35,16 @@ Feel free to do as much of the assignment as you can - it could be either the wh
 #### Basic Requirements:
 ####-----------------DOING----------------------####
 * Finish provided unit tests and add as many of them as you find necessary. 
-* Implement a page that shows a list of all categories with a number of products in each. The title must be a link leading to the page with product and category details. 
-* Implement a page that would show a list of all products in a given category with pagination. Display a title, a price, a small thumbnail and the number of likes for each product. Use the category slug in URL. 
-* Implement a ‘Product Details’ page. Display each product’s title, image, price, description and other basic info. 
-* Add the ability to like products, save either the account of the person that has liked something or their IP address (for unauthorized users). Allow only one like per user/IP. Do not keep IP for authenticated users.
 * Add the ability to comment products on their respective pages and display all recent comments (for the span of last 24 hours). The comment length should be limited to 500 symbols. Authorization should not be required, comments must be flat - ,no replies needed. 
-* Add all models to the admin interface and make sure that the ‘view on site’ button works properly.
 ####---------------DONE---------------------------###
 * Update the field “slug” of the Product model so that it’s unique. 
 * Add an image field to the Product model.
+* Implement a page that shows a list of all categories with a number of products in each. The title must be a link leading to the page with product and category details. 
+* Implement a page that would show a list of all products in a given category with pagination. Display a title, a price, a small thumbnail and the number of likes for each product. Use the category slug in URL. 
+* Implement a ‘Product Details’ page. Display each product’s title, image, price, description and other basic info. 
+* Add the ability to like products, save either the account of the person that has liked something or their IP address (for 
+unauthorized users). Allow only one like per user/IP. Do not keep IP for authenticated users.
+* Add all models to the admin interface and make sure that the ‘view on site’ button works properly.
 
 
 

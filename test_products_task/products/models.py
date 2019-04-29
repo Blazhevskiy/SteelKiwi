@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
+from django.contrib.contenttypes.fields import GenericRelation
 
 from config import settings
 

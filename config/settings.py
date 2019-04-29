@@ -38,7 +38,7 @@ DEBUG = env.bool("DJANGO_DEBUG")
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
+ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
 
 ADMINS = tuple([tuple(admins.split(':')) for admins in env.list('DJANGO_ADMINS')])
 
